@@ -1,33 +1,33 @@
-Yampee Annotations: a PHP library that understand annotations
+Yampee Form: a PHP library to validate your forms
 =============================================================
 
-What is Yampee Annotations ?
+What is Yampee Form ?
 ----------------------------
 
-Yampee Annotations is a PHP library that parses annotations in DocBlocks comments and converts them to
-PHP objects.
+Yampee Annotations is a PHP library to validate easily your forms, using a set
+of validators and filters.
 
 An example ?
 
 ``` php
 <?php
-class TestController
-{
-	/**
-	 * @Route('/{page}', name = 'homepage', defaults = {})
-	 */
-	public function action()
-	{
-	}
-}
+$form = $factory->createFormBuilder()
+	->add('alnum_length')
+		->addValidator(new Yampee_Form_Validator_Alnum())
+		->addValidator(new Yampee_Form_Validator_ExactLength(4))
+		->addFilter(new Yampee_Form_Filter_Xss())
+	->end()
+	->add('test2')
+		->setRequired(false)
+		->addFilter(new Yampee_Form_Filter_Xss())
+	->end();
 
-$reader = new Yampee_Annotations_Reader();
-$reader->registerAnnotation(new RouteAnnotation());
+$form->bind(array(
+	'alnum_length' => 'test'
+));
 
-$annotations = $reader->read(array('TestController', 'action'));
+var_dump($form->getData());
 ```
-
-But it's much more than this: discover all the possibilities in the documentation !
 
 Documentation
 -------------
@@ -37,5 +37,5 @@ The documentation is to be found in the `doc/` directory.
 About
 -------
 
-Yampee Annotations is licensed under the MIT license (see LICENSE file).
-The Yampee Annotations library is developed and maintained by the Titouan Galopin.
+Yampee Form is licensed under the MIT license (see LICENSE file).
+The Yampee Form library is developed and maintained by the Titouan Galopin.
